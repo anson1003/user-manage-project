@@ -11,6 +11,28 @@ interface UserInputProps {
 }
 
 const UserInput: React.FC<UserInputProps> = ({ newUser, handleInputChange, handleSubmit ,isLoading}) => {
+
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    // Basic alphabet validation for name fields
+    if (name === 'firstname' || name === 'lastname') {
+      const regex = /^[a-zA-Z]*$/; // Regex pattern to allow only alphabetic characters
+      if (regex.test(value) || value === '') {
+        handleInputChange(e);
+      }
+    } else {
+      handleInputChange(e);
+    }
+  };
+
+  const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Basic numeric validation for age field
+    if (!isNaN(Number(value)) || value === '') {
+      handleInputChange(e);
+    }
+  };
+  
   return (
     <div className="bg-white px-12 pt-6">
       <form onSubmit={handleSubmit} className="border border-black px-6 pt-6 pb-8 mb-4">
@@ -23,7 +45,7 @@ const UserInput: React.FC<UserInputProps> = ({ newUser, handleInputChange, handl
             name="firstname"
             placeholder={FIRST_NAME}
             value={newUser.firstname}
-            onChange={handleInputChange}
+            onChange={handleNameChange}
           />
         </div>
         <div className="mb-4">
@@ -35,7 +57,7 @@ const UserInput: React.FC<UserInputProps> = ({ newUser, handleInputChange, handl
             name="lastname"
             placeholder={LAST_NAME}
             value={newUser.lastname}
-            onChange={handleInputChange}
+            onChange={handleNameChange}
           />
         </div>
         <div className="mb-4">
@@ -62,7 +84,7 @@ const UserInput: React.FC<UserInputProps> = ({ newUser, handleInputChange, handl
             name="age"
             placeholder={AGE}
             value={newUser.age ?? ''}
-            onChange={handleInputChange}
+            onChange={handleAgeChange}
           />
         </div>
         <div className="flex items-center justify-between">
